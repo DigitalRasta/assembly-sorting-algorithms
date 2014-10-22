@@ -1,6 +1,6 @@
 ﻿namespace sortingProject
 {
-    partial class Form1
+    partial class mainWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -159,6 +159,7 @@
             this.button1.TabStop = false;
             this.button1.Text = "START";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label4
             // 
@@ -179,7 +180,7 @@
             this.text_exTime.Size = new System.Drawing.Size(270, 31);
             this.text_exTime.TabIndex = 11;
             // 
-            // Form1
+            // mainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -196,8 +197,8 @@
             this.Controls.Add(this.button_openFile);
             this.Controls.Add(this.text_sourceFile);
             this.Controls.Add(this.label_sourceFile);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "mainWindow";
+            this.Text = "Sorting Algorithms";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -5,16 +5,38 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sortingProject", "sortingProject.csproj", "{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asmLib", "..\asmLib\asmLib.vcxproj", "{CF9998A3-94DF-4165-8106-D7336138719A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
 		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Debug|Win32.Build.0 = Debug|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Release|Any CPU.ActiveCfg = Release|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Release|Win32.ActiveCfg = Release|Win32
+		{CF9998A3-94DF-4165-8106-D7336138719A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

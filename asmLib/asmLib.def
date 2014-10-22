@@ -1,0 +1,3 @@
+LIBRARY     "asmLib" 
+EXPORTS 
+helloWorld
