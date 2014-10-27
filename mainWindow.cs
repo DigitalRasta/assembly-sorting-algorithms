@@ -8,6 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/*
+ * Events handler. 
+ * Author: Jakub'Digitalrasta'Bujny
+ * Version: 0.0.0
+ * Created: 22.10.2014
+ * Changelog:
+ */
+
 namespace sortingProject
 {
     public partial class mainWindow : Form
@@ -24,6 +32,7 @@ namespace sortingProject
                     }
                 }
                 combo_lib.SelectedIndex = 0;
+                combo_method.SelectedIndex = 0;
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -54,18 +63,33 @@ namespace sortingProject
 
         private void button1_Click(object sender, EventArgs e)
         {
+            /*String validation = vaildateUserInput();
+            if (validation != "OK")
+            {
+                MessageBox.Show(validation);
+                return;
+            }
             DataLoader loader = new DataLoader(text_sourceFile.Text);
             int[][] inputData;
             try
             {
-                inputData = loader.parseAndLoad();
+                inputData = loader.parseAndLoad(';');
             }
             catch (ExceptionInfoToGUI ex)
             {
                 MessageBox.Show(ex.getMessage());
-            }
-            int i = 0;
-            
+                return;
+            }*/
+            int[][] inputData = DataLoader.debug_generateRandomTestData(500, 1000, 2000, 3000, 1, 30000);
+            Executor test = new Executor(inputData, 4);
+            //test.start();
+            int j = 0;
+        }
+
+
+        private String vaildateUserInput() {
+            //todo: method content
+            return "OK";
         }
     }
 }

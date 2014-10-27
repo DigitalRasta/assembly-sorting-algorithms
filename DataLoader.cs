@@ -24,27 +24,34 @@ namespace sortingProject
             this.filePath = filePath;
         }
 
-        public int[][] parseAndLoad()
+        /*
+         * Parsing input file and pack it into 2d int array
+         * separator: sign which is separating numbers in each line
+         * Return: parsed input data
+         */
+        public int[][] parseAndLoad(char separator)
         {
-            ArrayList result = new ArrayList(); 
+            ArrayList parsedLines = new ArrayList(); 
             try
             {
                 using (TextReader reader = File.OpenText(filePath))
                 {
                     String line;
+                    //read and parse each line
                     while((line = reader.ReadLine()) != null) {
-                        String[] stringElements = line.Split(';');
+                        String[] stringElements = line.Split(separator);
                         int[] intElements = new int[stringElements.Length]; 
                         for (int i = 0; i < stringElements.Length; i++)
                         {
                             intElements[i] = int.Parse(stringElements[i]);
                         }
-                        result.Add(intElements);
+                        parsedLines.Add(intElements);
                     }
-                    int[][] toReturn = new int[result.Count][];
-                    for (int i = 0; i < result.Count; i++)
+                    //convert ArrayList into normal array
+                    int[][] toReturn = new int[parsedLines.Count][];
+                    for (int i = 0; i < parsedLines.Count; i++)
                     {
-                        toReturn[i] = (int[])result[i];
+                        toReturn[i] = (int[])parsedLines[i];
                     }
                     return toReturn;
                 }
@@ -61,6 +68,32 @@ namespace sortingProject
             {
                 throw new ExceptionInfoToGUI("Problem with input file open.");
             }
+        }
+
+        /*
+         * Method used in software testing. Generates random test data.
+         * minSize: min size of input data
+         * maxSize: max size of input data
+         * minBlockSize: min size of input in one block
+         * maxBlockSize: max size of input in one block
+         * minVal: min val to sorting
+         * maxVal: max val to sorting
+         */ 
+        public static int[][] debug_generateRandomTestData(int minSize, int maxSize, int minBlockSize, int maxBlockSize, int minVal, int maxVal)
+        {
+            Random randomGenerator = new Random();
+            int globalSize = randomGenerator.Next(minSize, maxSize);
+            int[][] toReturn = new int[globalSize][];
+            for (int i = 0; i < toReturn.Length; i++)
+            {
+                int innerSize = randomGenerator.Next(minBlockSize, maxBlockSize);
+                toReturn[i] = new int[innerSize];
+                for (int j = 0; j < toReturn[i].Length; j++)
+                {
+                    toReturn[i][j] = randomGenerator.Next(minVal, maxVal);
+                }
+            }
+            return toReturn;
         }
     }
 }
