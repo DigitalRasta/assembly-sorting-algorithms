@@ -28,13 +28,13 @@ namespace sortingProject
         Sorting sortingObject;
 
 
-        public Executor(int[][] inputArray, int numberOfThreads)
+        public Executor(int[][] inputArray, int numberOfThreads, Lib library, Method method)
         {
             this.dataArray = inputArray;
             this.availableThreadsCounter = numberOfThreads;
             this.tasksCount = inputArray.Length;
             sortingObject = new Sorting();
-            sortingObject.cs_bubble("Kutas w cyc");
+            sortingMethod = sortingObject.GetType().GetMethod(library + "_" + method);
         }
 
         public void start()
@@ -60,31 +60,61 @@ namespace sortingProject
             int[] array = dataArray[(int)positionInInputArray];
             fixed (int* ptr = dataArray[(int)positionInInputArray])
             {
-                testIt(ptr, array.Length);
+                    IntPtr packedPointer = new IntPtr(ptr);
+                    sortingMethod.Invoke(sortingObject, new object[] { packedPointer, dataArray[(int)positionInInputArray].Length });
             }
             operationsInThreadCompleted();
         }
 
-        private unsafe void testIt(int* pointer, int length)
-        {
-            int temp = 0;
-            for (int write = 0; write < length; write++)
-            {
-                for (int sort = 0; sort < length - 1; sort++)
-                {
-                    if (pointer[sort] > pointer[sort + 1])
-                    {
-                        temp = pointer[sort + 1];
-                        pointer[sort + 1] = pointer[sort];
-                        pointer[sort] = temp;
-                    }
-                }
-            }
-        }
         private void operationsInThreadCompleted()
         {
             tasksAlreadyComputed++;
             availableThreadsCounter++;
+        }
+
+        public unsafe void debug_executeAndCompareResult(Executor.Method method)
+        {
+            int[] asmArray = new int[500];
+            int[] csArray = new int[500];
+            int randomSeed = new Random().Next();
+            Random randomGenerator = new Random(randomSeed);
+            for (int i = 0; i < asmArray.Length; i++)
+            {
+                asmArray[i] = randomGenerator.Next();
+                csArray[i] = randomGenerator.Next();
+            }
+            MethodInfo csMethod = sortingObject.GetType().GetMethod("cs_" + method);
+            MethodInfo asmMethod = sortingObject.GetType().GetMethod("asm_" + method);
+            fixed (int* ptr = asmArray)
+            {
+                IntPtr packedPointer = new IntPtr(ptr);
+                asmMethod.Invoke(sortingObject, new object[] { packedPointer, asmArray.Length });
+            }
+            fixed (int* ptr = csArray)
+            {
+                IntPtr packedPointer = new IntPtr(ptr);
+                csMethod.Invoke(sortingObject, new object[] { packedPointer, csArray.Length });
+            }
+            for (int i = 0; i < asmArray.Length; i++)
+            {
+                if (asmArray[i] != csArray[i])
+                {
+                    throw new Exception("Implementation error. Random seed: " + randomSeed);
+                }
+            }
+        }
+
+        public enum Lib
+        {
+            cs,
+            asm
+        }
+
+        public enum Method
+        {
+            bubble,
+            insert,
+            quick
         }
     }
 }

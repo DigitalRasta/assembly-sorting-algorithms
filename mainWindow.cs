@@ -61,7 +61,12 @@ namespace sortingProject
             text_sourceFile.SelectionStart = text_sourceFile.Text.Length;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private String vaildateUserInput() {
+            //todo: method content
+            return "OK";
+        }
+
+        private void button_start_Click(object sender, EventArgs e)
         {
             /*String validation = vaildateUserInput();
             if (validation != "OK")
@@ -81,15 +86,22 @@ namespace sortingProject
                 return;
             }*/
             int[][] inputData = DataLoader.debug_generateRandomTestData(500, 1000, 2000, 3000, 1, 30000);
-            Executor test = new Executor(inputData, 4);
-            //test.start();
-            int j = 0;
-        }
-
-
-        private String vaildateUserInput() {
-            //todo: method content
-            return "OK";
+            Executor executorObject;
+            try
+            {
+                executorObject = new Executor(inputData, 4, Executor.Lib.asm, Executor.Method.bubble);
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                MessageBox.Show("Missing csharpLib.dll");
+                return;
+            }
+            catch (System.DllNotFoundException ex)
+            {
+                MessageBox.Show("Missing asmLib.dll");
+                return;
+            }
+            executorObject.debug_executeAndCompareResult(Executor.Method.bubble);
         }
     }
 }

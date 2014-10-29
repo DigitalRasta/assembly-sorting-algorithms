@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sortingProject", "sortingProject.csproj", "{8CA9BB04-2AB1-4FB8-BD61-9CD0F362C74D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{014E5511-88ED-451F-97FA-9DCFCD312544} = {014E5511-88ED-451F-97FA-9DCFCD312544}
+		{CF9998A3-94DF-4165-8106-D7336138719A} = {CF9998A3-94DF-4165-8106-D7336138719A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asmLib", "asmLib\asmLib.vcxproj", "{CF9998A3-94DF-4165-8106-D7336138719A}"
 EndProject

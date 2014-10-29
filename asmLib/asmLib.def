@@ -1,3 +1,4 @@
 LIBRARY     "asmLib" 
 EXPORTS 
-helloWorld
+asm_testDll
+asm_bubble

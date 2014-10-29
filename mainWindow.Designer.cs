@@ -38,7 +38,7 @@
             this.combo_lib = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.text_outputFile = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_start = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.text_exTime = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -151,17 +151,17 @@
             this.text_outputFile.Size = new System.Drawing.Size(253, 29);
             this.text_outputFile.TabIndex = 8;
             // 
-            // button1
+            // button_start
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button1.Location = new System.Drawing.Point(208, 129);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 38);
-            this.button1.TabIndex = 9;
-            this.button1.TabStop = false;
-            this.button1.Text = "START";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button_start.Location = new System.Drawing.Point(208, 129);
+            this.button_start.Name = "button_start";
+            this.button_start.Size = new System.Drawing.Size(120, 38);
+            this.button_start.TabIndex = 9;
+            this.button_start.TabStop = false;
+            this.button_start.Text = "START";
+            this.button_start.UseVisualStyleBackColor = true;
+            this.button_start.Click += new System.EventHandler(this.button_start_Click);
             // 
             // label4
             // 
@@ -214,7 +214,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.text_exTime);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_start);
             this.Controls.Add(this.text_outputFile);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.combo_lib);
@@ -243,7 +243,7 @@
         private System.Windows.Forms.ComboBox combo_lib;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox text_outputFile;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_start;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox text_exTime;
         private System.Windows.Forms.Label label5;

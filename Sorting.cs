@@ -13,17 +13,41 @@ namespace sortingProject
         //MethodInfo sortingMethod;
         Object csharp_sortingObject;
 
-        /*[DllImport(@"C:\Users\Jakubek\workspaces\JA\sortingProject\csharpLib\bin\Debug\csharpLib.dll")]
-        public static extern void asm_bubble(String msg); */
         public Sorting() {
             var DLL = Assembly.LoadFile(@"C:\Users\Jakubek\workspaces\JA\sortingProject\csharpLib\bin\Debug\csharpLib.dll");
             var type = DLL.GetType("csharpLib.Sorting");
             csharp_sortingObject = Activator.CreateInstance(type);
+            asm_testDll();
         }
-        public void cs_bubble(String msg)
+        public unsafe void cs_bubble(int* pointer, int length)
         {
             var method = csharp_sortingObject.GetType().GetMethod("bubble");
-            method.Invoke(csharp_sortingObject, new object[] { msg});
+            IntPtr packedPointer = new IntPtr(pointer);
+            method.Invoke(csharp_sortingObject, new object[] {packedPointer, length });
         }
+
+        public unsafe void cs_insert(int* pointer, int length)
+        {
+            var method = csharp_sortingObject.GetType().GetMethod("bubble");
+            method.Invoke(csharp_sortingObject, new object[] { });
+        }
+
+        public unsafe void cs_quick(int* pointer, int length)
+        {
+            var method = csharp_sortingObject.GetType().GetMethod("bubble");
+            method.Invoke(csharp_sortingObject, new object[] { });
+        }
+
+        [DllImport(@"asmLib.dll")]
+        public unsafe static extern void asm_bubble(int* pointer, int length);
+
+        [DllImport(@"asmLib.dll")]
+        public unsafe static extern void asm_insert(int* pointer, int length);
+
+        [DllImport(@"asmLib.dll")]
+        public unsafe static extern void asm_quick(int* pointer, int length);
+
+        [DllImport(@"asmLib.dll")]
+        public unsafe static extern void asm_testDll();
     }
 }
