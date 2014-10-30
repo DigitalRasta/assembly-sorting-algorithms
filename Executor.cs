@@ -74,14 +74,17 @@ namespace sortingProject
 
         public unsafe void debug_executeAndCompareResult(Executor.Method method)
         {
-            int[] asmArray = new int[500];
-            int[] csArray = new int[500];
-            int randomSeed = new Random().Next();
+            int[] asmArray = new int[4];
+            int[] csArray = new int[4];
+            //int randomSeed = new Random().Next();
+            int randomSeed = 0;
             Random randomGenerator = new Random(randomSeed);
             for (int i = 0; i < asmArray.Length; i++)
             {
-                asmArray[i] = randomGenerator.Next();
-                csArray[i] = randomGenerator.Next();
+                //int randomVal = randomGenerator.Next();
+                int randomVal = i;
+                asmArray[i] = randomVal;
+                csArray[i] = randomVal;
             }
             MethodInfo csMethod = sortingObject.GetType().GetMethod("cs_" + method);
             MethodInfo asmMethod = sortingObject.GetType().GetMethod("asm_" + method);

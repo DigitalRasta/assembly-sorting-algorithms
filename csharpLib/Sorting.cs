@@ -12,15 +12,15 @@ namespace csharpLib
         public unsafe void bubble(int* pointer, int length)
         {
             int temp = 0;
-            for (int write = 0; write < length; write++)
+            for (int i = 0; i < length; i++)
             {
-                for (int sort = 0; sort < length - 1; sort++)
+                for (int j = 0; j < length - i - 1; j++)
                 {
-                    if (pointer[sort] > pointer[sort + 1])
+                    if (pointer[j] > pointer[j + 1])
                     {
-                        temp = pointer[sort + 1];
-                        pointer[sort + 1] = pointer[sort];
-                        pointer[sort] = temp;
+                        temp = pointer[j + 1];
+                        pointer[j + 1] = pointer[j];
+                        pointer[j] = temp;
                     }
                 }
             }
