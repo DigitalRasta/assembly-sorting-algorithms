@@ -8,26 +8,19 @@ asm_testDll proc
 	ret
 asm_testDll endp
 
+;eax - computing
+;ebx - first loop iterator
+;ecx - second loop iterator
+;esi - first loop condition
+;edi - second loop condition
+;edx - addressing
 asm_bubble proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
-	mov eax, DWORD PTR [pointer]
-	mov eax, DWORD PTR [pointer+1]
-	mov eax, DWORD PTR [pointer+2]
-	mov eax, DWORD PTR [pointer+3]
-	mov eax, DWORD PTR [pointer+4]
-	mov eax, DWORD PTR [pointer+5]
-	mov eax, DWORD PTR [pointer+6]
-	mov eax, DWORD PTR [pointer+7]
-	mov eax, DWORD PTR [pointer+8]
-	mov eax, DWORD PTR [pointer+9]
-	mov eax, DWORD PTR [pointer+10]
-	mov eax, DWORD PTR [pointer+11]
-	mov eax, DWORD PTR [pointer+12]
-	mov ebx, 4
-	mov ecx, 4 ; second loop iterator
+	xor ebx, ebx ; first loop iterator
+	xor ecx, ecx ; second loop iterator
 	mov eax, 4
 	mul len
 	mov esi, eax ; new len value
-	add esi, 4
+	mov edx, pointer
 	FirstLoop:
 		mov eax, esi
 		sub eax, ebx
@@ -37,17 +30,20 @@ asm_bubble proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
 			sub eax, 4
 			sub eax, ebx
 			mov edi, eax
+			xor ecx, ecx
 			SecondLoop:
+				mov edx, pointer
 				mov eax, edi
 				sub eax, ecx
 				jng EndSecondLoop
-				mov eax, DWORD PTR [pointer+ecx+4]
-				sub eax, DWORD PTR [pointer+ecx+4]
+				add edx, ecx
+				mov eax, DWORD PTR [edx]
+				sub eax, DWORD PTR [edx+4]
 				jl EndSecondLoopIteration
-				mov edx, DWORD PTR [pointer+ecx+4]
-				mov eax, DWORD PTR [pointer+ecx]
-				mov DWORD PTR [pointer+ecx+4], eax
-				mov DWORD PTR [pointer+ecx], edx
+				mov eax, DWORD PTR [edx+4]
+				push DWORD PTR [edx]
+				pop DWORD PTR [edx+4]
+				mov DWORD PTR [edx], eax
 				EndSecondLoopIteration:
 					add ecx, 4
 					jmp SecondLoop

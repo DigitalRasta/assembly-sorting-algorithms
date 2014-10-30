@@ -72,17 +72,17 @@ namespace sortingProject
             availableThreadsCounter++;
         }
 
-        public unsafe void debug_executeAndCompareResult(Executor.Method method)
+        public unsafe bool debug_executeAndCompareResult(Executor.Method method)
         {
-            int[] asmArray = new int[4];
-            int[] csArray = new int[4];
-            //int randomSeed = new Random().Next();
-            int randomSeed = 0;
+            int[] asmArray = new int[3000];
+            int[] csArray = new int[3000];
+            int randomSeed = new Random().Next();
+            //int randomSeed = 0;
             Random randomGenerator = new Random(randomSeed);
             for (int i = 0; i < asmArray.Length; i++)
             {
-                //int randomVal = randomGenerator.Next();
-                int randomVal = i;
+                int randomVal = randomGenerator.Next();
+                //int randomVal = 1000000-i;
                 asmArray[i] = randomVal;
                 csArray[i] = randomVal;
             }
@@ -105,6 +105,7 @@ namespace sortingProject
                     throw new Exception("Implementation error. Random seed: " + randomSeed);
                 }
             }
+            return true;
         }
 
         public enum Lib

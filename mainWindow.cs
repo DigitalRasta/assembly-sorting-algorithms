@@ -101,7 +101,11 @@ namespace sortingProject
                 MessageBox.Show("Missing asmLib.dll");
                 return;
             }
-            executorObject.debug_executeAndCompareResult(Executor.Method.bubble);
+
+            if (executorObject.debug_executeAndCompareResult(Executor.Method.bubble))
+            {
+                MessageBox.Show("Its working!");
+            }
         }
     }
 }
