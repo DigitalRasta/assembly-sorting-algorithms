@@ -85,7 +85,7 @@ namespace sortingProject
                 MessageBox.Show(ex.getMessage());
                 return;
             }*/
-            int[][] inputData = DataLoader.debug_generateRandomTestData(500, 1000, 2000, 3000, 1, 30000);
+            int[][] inputData = DataLoader.debug_generateRandomTestData(600, 900, 2000, 3000, 1, 30000);
             Executor executorObject;
             try
             {
@@ -101,15 +101,16 @@ namespace sortingProject
                 MessageBox.Show("Missing asmLib.dll");
                 return;
             }
+            executorObject.start();
 
-            if (executorObject.debug_executeAndCompareResult(Executor.Method.bubble))
+            /*if (executorObject.debug_executeAndCompareResult(Executor.Method.bubble))
             {
                 Console.WriteLine("Bubble is working!");
             }
             if (executorObject.debug_executeAndCompareResult(Executor.Method.insert))
             {
                 Console.WriteLine("Insert is working!");
-            }
+            }*/
         }
     }
 }

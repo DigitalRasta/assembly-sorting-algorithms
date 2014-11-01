@@ -25,6 +25,8 @@ namespace sortingProject
         int tasksAlreadyComputed = 0;
         volatile int dataArrayIterator = 0;
 
+        Object lockingObject = new Object();
+
         MethodInfo sortingMethod;
         Sorting sortingObject;
 
@@ -40,37 +42,51 @@ namespace sortingProject
 
         public void start()
         {
-            while (tasksAlreadyComputed < tasksCount)
+            int tasksLength = 0;
+            if (availableThreadsCounter > tasksCount)
             {
-                    if (availableThreadsCounter != 0 && dataArrayIterator < tasksCount)
+                tasksLength = tasksCount;
+            }
+            else
+            {
+                tasksLength = availableThreadsCounter;
+            }
+            Thread[] threadsArray = new Thread[tasksLength];
+            for (int i = 0; i < tasksLength; i++)
+            {
+                threadsArray[i] = new Thread(new ThreadStart(startSorting));
+                threadsArray[i].Start();
+            }
+            for (int i = 0; i < tasksLength; i++)
+            {
+                threadsArray[i].Join();
+            }
+        }
+
+        private unsafe void startSorting()
+        {
+            IntPtr packedPointer;
+            int length = 0;
+            while (true)
+            {
+                lock (lockingObject)
+                {
+                    if (tasksAlreadyComputed < tasksCount)
                     {
-                        Thread thread = new Thread(new ParameterizedThreadStart(startSorting));
-                        thread.Start(dataArrayIterator);
-                        dataArrayIterator++;
-                        availableThreadsCounter--;
+                        length = dataArray[(int)tasksAlreadyComputed].Length;
+                        fixed (int* ptr = dataArray[(int)tasksAlreadyComputed])
+                        {
+                            packedPointer = new IntPtr(ptr);
+                        }
                     }
                     else
                     {
-                        Thread.Sleep(20);
+                        break;
                     }
+                    tasksAlreadyComputed++;
+                }
+                sortingMethod.Invoke(sortingObject, new object[] { packedPointer, length });
             }
-        }
-
-        private unsafe void startSorting(object positionInInputArray)
-        {
-            int[] array = dataArray[(int)positionInInputArray];
-            fixed (int* ptr = dataArray[(int)positionInInputArray])
-            {
-                    IntPtr packedPointer = new IntPtr(ptr);
-                    sortingMethod.Invoke(sortingObject, new object[] { packedPointer, dataArray[(int)positionInInputArray].Length });
-            }
-            operationsInThreadCompleted();
-        }
-
-        private void operationsInThreadCompleted()
-        {
-            tasksAlreadyComputed++;
-            availableThreadsCounter++;
         }
 
         public unsafe bool debug_executeAndCompareResult(Executor.Method method)

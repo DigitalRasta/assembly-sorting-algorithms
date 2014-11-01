@@ -70,16 +70,16 @@ asm_insert proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
 		sub eax, 4
 		mov ecx, eax
 		SecondLoop:
-			cmp ecx, 0
+			cmp ecx, 0					   ; check first condition, end if second loop iterator < 0
 			jl EndSecondLoop
-			cmp edi, [esi+ecx]
+			cmp edi, [esi+ecx]			   ; check second condtion, end if edi(temp) >= pointer[ecx] 
 			jnl EndSecondLoop
 			push DWORD PTR [esi+ecx]	   ; swapping by stack because we can't do mov mem,mem
 			pop DWORD PTR [esi+ecx+4]
-			sub ecx, 4
+			sub ecx, 4					   ; decrease second loop iterator
 			jmp SecondLoop
 		EndSecondLoop:
-			mov [esi+ecx+4], edi
+			mov [esi+ecx+4], edi		   ; mov temp to pointer[iterator+1]
 			add ebx, 4
 			jmp FirstLoop
 	EndSort:
