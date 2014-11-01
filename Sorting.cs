@@ -28,13 +28,14 @@ namespace sortingProject
 
         public unsafe void cs_insert(int* pointer, int length)
         {
-            var method = csharp_sortingObject.GetType().GetMethod("bubble");
-            method.Invoke(csharp_sortingObject, new object[] { });
+            var method = csharp_sortingObject.GetType().GetMethod("insert");
+            IntPtr packedPointer = new IntPtr(pointer);
+            method.Invoke(csharp_sortingObject, new object[] { packedPointer, length});
         }
 
         public unsafe void cs_quick(int* pointer, int length)
         {
-            var method = csharp_sortingObject.GetType().GetMethod("bubble");
+            var method = csharp_sortingObject.GetType().GetMethod("quick");
             method.Invoke(csharp_sortingObject, new object[] { });
         }
 

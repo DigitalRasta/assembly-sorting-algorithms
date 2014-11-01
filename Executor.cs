@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -74,30 +75,41 @@ namespace sortingProject
 
         public unsafe bool debug_executeAndCompareResult(Executor.Method method)
         {
-            int[] asmArray = new int[3000];
-            int[] csArray = new int[3000];
+            int arraySize = 100000;
+            int[] asmArray = new int[arraySize];
+            int[] csArray = new int[arraySize];
             int randomSeed = new Random().Next();
             //int randomSeed = 0;
             Random randomGenerator = new Random(randomSeed);
             for (int i = 0; i < asmArray.Length; i++)
             {
                 int randomVal = randomGenerator.Next();
-                //int randomVal = 1000000-i;
+                //int randomVal = 100000-i;
                 asmArray[i] = randomVal;
                 csArray[i] = randomVal;
             }
             MethodInfo csMethod = sortingObject.GetType().GetMethod("cs_" + method);
             MethodInfo asmMethod = sortingObject.GetType().GetMethod("asm_" + method);
-            fixed (int* ptr = asmArray)
-            {
-                IntPtr packedPointer = new IntPtr(ptr);
-                asmMethod.Invoke(sortingObject, new object[] { packedPointer, asmArray.Length });
-            }
+            var watch = Stopwatch.StartNew();
             fixed (int* ptr = csArray)
             {
                 IntPtr packedPointer = new IntPtr(ptr);
                 csMethod.Invoke(sortingObject, new object[] { packedPointer, csArray.Length });
             }
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine(method + " cs time: " + elapsedMs);
+
+            watch = Stopwatch.StartNew();
+            fixed (int* ptr = asmArray)
+            {
+                IntPtr packedPointer = new IntPtr(ptr);
+                asmMethod.Invoke(sortingObject, new object[] { packedPointer, asmArray.Length });
+            }
+            watch.Stop();
+            elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine(method + " asm time: " + elapsedMs);
+
             for (int i = 0; i < asmArray.Length; i++)
             {
                 if (asmArray[i] != csArray[i])

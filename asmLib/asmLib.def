@@ -2,3 +2,4 @@ LIBRARY     "asmLib"
 EXPORTS 
 asm_testDll
 asm_bubble
+asm_insert

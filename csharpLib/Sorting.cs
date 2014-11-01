@@ -25,5 +25,22 @@ namespace csharpLib
                 }
             }
         }
+
+        public unsafe void insert(int* pointer, int length)
+        {
+            int temp = 0;
+            int j = 0;
+            for (int i = 1; i < length; i++)
+            {
+                temp = pointer[i];
+                j = i - 1;
+                while ((temp < pointer[j]) && (j >= 0))
+                {
+                    pointer[j + 1] = pointer[j];
+                    j = j - 1;
+                }
+                pointer[j + 1] = temp;
+            }
+        }
     }
 }

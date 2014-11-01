@@ -11,47 +11,79 @@ asm_testDll endp
 ;eax - computing
 ;ebx - first loop iterator
 ;ecx - second loop iterator
-;esi - first loop condition
+;edx - first loop condition
 ;edi - second loop condition
-;edx - addressing
-asm_bubble proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
-	xor ebx, ebx ; first loop iterator
-	xor ecx, ecx ; second loop iterator
+;esi - addressing
+asm_bubble proc uses ecx ebx eax esi edx edi pointer:DWORD, len:DWORD
+	xor ebx, ebx                           ; clear first loop iterator
 	mov eax, 4
-	mul len
-	mov esi, eax ; new len value
-	mov edx, pointer
-	FirstLoop:
-		mov eax, esi
-		sub eax, ebx
+	mul len		                           ; integer is 32bit = 4 bytes, so multiply length of array by 4
+	mov edx, eax						   ; store new length value
+	mov esi, pointer					   ; store pointer in register for addressing
+	FirstLoop:				       
+		cmp edx, ebx					   ; check loop condition, edx=len*4, ebx is iterator
 		jng EndSort
 		SecondLoopPrepare:
-			mov eax, esi
+			mov eax, edx			       ; prepare second loop condition: len*4 - 4 - ebx (in C its: length-1-i)
 			sub eax, 4
 			sub eax, ebx
 			mov edi, eax
-			xor ecx, ecx
+			xor ecx, ecx				   ; clear second loop iterator
 			SecondLoop:
-				mov edx, pointer
-				mov eax, edi
-				sub eax, ecx
+				mov esi, pointer           ; restore pointer             
+				cmp edi, ecx			   ; check loop condition
 				jng EndSecondLoop
-				add edx, ecx
-				mov eax, DWORD PTR [edx]
-				sub eax, DWORD PTR [edx+4]
-				jl EndSecondLoopIteration
-				mov eax, DWORD PTR [edx+4]
-				push DWORD PTR [edx]
-				pop DWORD PTR [edx+4]
-				mov DWORD PTR [edx], eax
+				mov eax, DWORD PTR [esi+ecx]   ; check if currentElement > nextElement
+				sub eax, DWORD PTR [esi+ecx+4] ;
+				jl EndSecondLoopIteration  ; jump if not
+				mov eax, DWORD PTR [esi+ecx+4] ; case: currentElement > nextElement, we must swap
+				push DWORD PTR [esi+ecx]	   ; swapping by stack because we can't do mov mem,mem
+				pop DWORD PTR [esi+ecx+4]
+				mov DWORD PTR [esi+ecx], eax
 				EndSecondLoopIteration:
-					add ecx, 4
+					add ecx, 4			   ; incrase iterator by 4 (remeber about 32bit=4bytes)
 					jmp SecondLoop
 		EndSecondLoop:
-		add ebx, 4
+		add ebx, 4						   ; incrase iterator by 4 (remeber about 32bit=4bytes)
 		jmp FirstLoop
 	EndSort:
 	ret
 asm_bubble endp
+
+;eax - computing
+;ebx - first loop iterator
+;ecx - second loop iterator
+;edx - first loop condition
+;edi - temp
+;esi - addressing
+asm_insert proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
+	mov ebx, 4                             ; set first loop iterator
+	mov eax, 4
+	mul len		                           ; integer is 32bit = 4 bytes, so multiply length of array by 4
+	mov edx, eax						   ; store new length value
+	mov esi, pointer					   ; store pointer in register for addressing
+	FirstLoop:				       
+		cmp edx, ebx					   ; check loop condition, edx=len*4, ebx is iterator
+		jng EndSort
+		mov edi, [esi+ebx]				   ; store pointer[ebx] in temp
+		mov eax, ebx					   ; set second loop iterator in next 3 instructions
+		sub eax, 4
+		mov ecx, eax
+		SecondLoop:
+			cmp ecx, 0
+			jl EndSecondLoop
+			cmp edi, [esi+ecx]
+			jnl EndSecondLoop
+			push DWORD PTR [esi+ecx]	   ; swapping by stack because we can't do mov mem,mem
+			pop DWORD PTR [esi+ecx+4]
+			sub ecx, 4
+			jmp SecondLoop
+		EndSecondLoop:
+			mov [esi+ecx+4], edi
+			add ebx, 4
+			jmp FirstLoop
+	EndSort:
+	ret
+asm_insert endp
 
 end 

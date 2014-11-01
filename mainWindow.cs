@@ -104,7 +104,11 @@ namespace sortingProject
 
             if (executorObject.debug_executeAndCompareResult(Executor.Method.bubble))
             {
-                MessageBox.Show("Its working!");
+                Console.WriteLine("Bubble is working!");
+            }
+            if (executorObject.debug_executeAndCompareResult(Executor.Method.insert))
+            {
+                Console.WriteLine("Insert is working!");
             }
         }
     }
