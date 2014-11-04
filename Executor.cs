@@ -91,7 +91,7 @@ namespace sortingProject
 
         public unsafe bool debug_executeAndCompareResult(Executor.Method method)
         {
-            int arraySize = 100000;
+            int arraySize = 10;
             int[] asmArray = new int[arraySize];
             int[] csArray = new int[arraySize];
             int randomSeed = new Random().Next();
@@ -100,7 +100,7 @@ namespace sortingProject
             for (int i = 0; i < asmArray.Length; i++)
             {
                 int randomVal = randomGenerator.Next();
-                //int randomVal = 100000-i;
+                //int randomVal = 10-i;
                 asmArray[i] = randomVal;
                 csArray[i] = randomVal;
             }

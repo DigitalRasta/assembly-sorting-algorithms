@@ -45,26 +45,25 @@ namespace csharpLib
 
         public unsafe void quick(int* pointer, int length)
         {
-            quick_resursive(pointer, 0, length);
+            quick_resursive(pointer, 0, length-1);
         }
 
         private unsafe void quick_resursive(int* array, int low, int high)
-        {
-            int temp = 0;  
+        { 
             if (low < high)
             {
-                int pivot = low;
+                int temp = 0; 
+                int divide = low;
                 int i = low;
                 int j = high;
-
                 while (i < j)
                 {
-                    while ((array[i] <= array[pivot]) && (i < high))
+                    while ((array[i] <= array[divide]) && (i < high))
                     {
                         i++;
                     }
 
-                    while (array[j] > array[pivot])
+                    while (array[j] > array[divide])
                     {
                         j--;
                     }
@@ -77,8 +76,8 @@ namespace csharpLib
                     }
                 }
 
-                temp = array[pivot];
-                array[pivot] = array[j];
+                temp = array[divide];
+                array[divide] = array[j];
                 array[j] = temp;
                 quick_resursive(array, low, j - 1);
                 quick_resursive(array, j + 1, high);

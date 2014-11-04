@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -85,11 +86,11 @@ namespace sortingProject
                 MessageBox.Show(ex.getMessage());
                 return;
             }*/
-            int[][] inputData = DataLoader.debug_generateRandomTestData(600, 900, 2000, 3000, 1, 30000);
+            int[][] inputData = DataLoader.debug_generateRandomTestData(4, 4, 8000, 12000, 1, 30000);
             Executor executorObject;
             try
             {
-                executorObject = new Executor(inputData, 4, Executor.Lib.asm, Executor.Method.bubble);
+                executorObject = new Executor(inputData, 1, Executor.Lib.asm, Executor.Method.quick);
             }
             catch (System.IO.FileNotFoundException ex)
             {
@@ -101,7 +102,6 @@ namespace sortingProject
                 MessageBox.Show("Missing asmLib.dll");
                 return;
             }
-            executorObject.start();
 
             /*if (executorObject.debug_executeAndCompareResult(Executor.Method.bubble))
             {
@@ -111,6 +111,10 @@ namespace sortingProject
             {
                 Console.WriteLine("Insert is working!");
             }*/
+            if (executorObject.debug_executeAndCompareResult(Executor.Method.quick))
+            {
+                Console.WriteLine("Quick is working!");
+            }
         }
     }
 }

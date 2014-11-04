@@ -86,4 +86,70 @@ asm_insert proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
 	ret
 asm_insert endp
 
-end 
+
+
+;eax - computing
+;ecx - i
+;ebx - j
+;edx - divide
+;edi - temp
+;esi - addressing
+asm_quick_rec proc uses ecx ebx eax edx esi edi pointer:DWORD, lowp:DWORD, highp:DWORD
+	mov ecx, lowp
+	mov ebx, highp
+	cmp ecx, ebx
+	jge EndSort
+	mov esi, pointer
+	mov edx, lowp
+	MainLoop:
+		cmp ecx, ebx
+		jge EndMainLoop
+		FirstLoop:
+			mov eax, [esi+ecx]
+			cmp eax, [esi+edx]
+			jg SecondLoop
+			mov eax, highp
+			cmp eax, ecx
+			jng SecondLoop
+			add ecx, 4
+			jmp FirstLoop
+		SecondLoop:
+			mov eax, [esi+ebx]
+			cmp eax, [esi+edx]
+			jng EndSecondLoop
+			sub ebx, 4
+			jmp SecondLoop
+		EndSecondLoop:
+		cmp ecx, ebx
+		jge MainLoop
+		mov edi, [esi+ecx]
+		push [esi+ebx]
+		pop [esi+ecx]
+		mov [esi+ebx], edi
+		jmp MainLoop
+	EndMainLoop:
+		mov edi, [esi+edx]
+		push [esi+ebx]
+		pop [esi+edx]
+		mov [esi+ebx], edi
+		mov eax, ebx
+		sub eax, 4
+		invoke asm_quick_rec, pointer, lowp, eax
+		mov eax, ebx
+		add eax, 4
+		invoke asm_quick_rec, pointer, eax, highp
+	EndSort:
+		ret
+asm_quick_rec endp
+ 
+
+asm_quick proc uses eax ebx pointer:DWORD, len:DWORD
+	mov eax, len
+	sub eax, 1
+	mov ebx, 4
+	mul ebx
+	invoke asm_quick_rec, pointer, 0, eax
+	ret
+asm_quick endp
+
+end

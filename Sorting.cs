@@ -36,7 +36,8 @@ namespace sortingProject
         public unsafe void cs_quick(int* pointer, int length)
         {
             var method = csharp_sortingObject.GetType().GetMethod("quick");
-            method.Invoke(csharp_sortingObject, new object[] { });
+            IntPtr packedPointer = new IntPtr(pointer);
+            method.Invoke(csharp_sortingObject, new object[] { packedPointer, length });
         }
 
         [DllImport(@"asmLib.dll")]
