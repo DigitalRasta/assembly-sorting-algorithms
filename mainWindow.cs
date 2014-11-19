@@ -19,9 +19,9 @@ using System.Windows.Forms;
 
 namespace sortingProject
 {
-    public partial class mainWindow : Form
+    public partial class MainWindow : Form
     {
-        public mainWindow()
+        public MainWindow()
         {
                 InitializeComponent();
                 for (int i = 0; i < combo_numThreads.Items.Count; i++)
@@ -86,35 +86,14 @@ namespace sortingProject
                 MessageBox.Show(ex.getMessage());
                 return;
             }*/
-            int[][] inputData = DataLoader.debug_generateRandomTestData(4, 4, 8000, 12000, 1, 30000);
-            Executor executorObject;
-            try
+            int[][] inputData = DataLoader.debug_generateRandomTestData(300, 3000, 8000, 12000, 1, 30000);
+            int[][] sortedArray = inputData.Select(a => a.ToArray()).ToArray();
+            for (int i = 0; i < sortedArray.Length; i++)
             {
-                executorObject = new Executor(inputData, 1, Executor.Lib.asm, Executor.Method.quick);
+                Array.Sort(sortedArray[i]);
             }
-            catch (System.IO.FileNotFoundException ex)
-            {
-                MessageBox.Show("Missing csharpLib.dll");
-                return;
-            }
-            catch (System.DllNotFoundException ex)
-            {
-                MessageBox.Show("Missing asmLib.dll");
-                return;
-            }
-
-            /*if (executorObject.debug_executeAndCompareResult(Executor.Method.bubble))
-            {
-                Console.WriteLine("Bubble is working!");
-            }
-            if (executorObject.debug_executeAndCompareResult(Executor.Method.insert))
-            {
-                Console.WriteLine("Insert is working!");
-            }*/
-            if (executorObject.debug_executeAndCompareResult(Executor.Method.quick))
-            {
-                Console.WriteLine("Quick is working!");
-            }
+            //Testing testObject = new Testing();
+            //testObject.testAllMethodsWithTimes(inputData, sortedArray, 4);
         }
     }
 }

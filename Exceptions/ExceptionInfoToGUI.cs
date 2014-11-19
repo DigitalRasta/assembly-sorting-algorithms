@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /*
  * Exception which provides user-readable informations about Exception in application
@@ -11,9 +7,9 @@ using System.Threading.Tasks;
  * Created: 22.10.2014
  * Changelog:
  */
-namespace sortingProject
+namespace sortingProject.Exceptions
 {
-    class ExceptionInfoToGUI : Exception
+    public class ExceptionInfoToGUI : System.Exception
     {
 
         String message;

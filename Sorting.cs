@@ -10,7 +10,6 @@ namespace sortingProject
 {
     class Sorting
     {
-        //MethodInfo sortingMethod;
         Object csharp_sortingObject;
 
         public Sorting() {

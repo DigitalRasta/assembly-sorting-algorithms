@@ -7,30 +7,39 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-/*
- * Class with program logic. Grab data from GUI and user input, creates threads, manage them
- * and execute computing functions from libs
- * Author: Jakub'Digitalrasta'Bujny
- * Version: 0.0.0
- * Created: 22.10.2014
- * Changelog:
- */
 namespace sortingProject
 {
+    /*
+    * Class with program logic. Process data from user input, creates threads, manage them
+    * and execute computing functions from libs
+    * Author: Jakub'Digitalrasta'Bujny
+    * Version: 0.0.0
+    * Created: 22.10.2014
+    * Changelog:
+    */
     class Executor
     {
+        //Array with data from user
         int[][] dataArray;
+        //available threads to use
         int availableThreadsCounter;
+        //tasks left to complete computing
         int tasksCount;
+        //Number of tasks already computed
         int tasksAlreadyComputed = 0;
+        //Iterating on dataArray
         volatile int dataArrayIterator = 0;
-
+        //Object for threads synchro
         Object lockingObject = new Object();
-
+        //Method to use
         MethodInfo sortingMethod;
+        //Object containing sortingMethod
         Sorting sortingObject;
 
-
+        //Standard constructor.
+        //numberOfThreads: to use in computing
+        //library: C# or ASM
+        //method: bubble/insert/quick
         public Executor(int[][] inputArray, int numberOfThreads, Lib library, Method method)
         {
             this.dataArray = inputArray;
@@ -40,17 +49,21 @@ namespace sortingProject
             sortingMethod = sortingObject.GetType().GetMethod(library + "_" + method);
         }
 
+        //Start computing. Creates threads and divide work.
         public void start()
         {
             int tasksLength = 0;
+            
             if (availableThreadsCounter > tasksCount)
             {
+                //We've got more threads than tasks
                 tasksLength = tasksCount;
             }
             else
             {
                 tasksLength = availableThreadsCounter;
             }
+            //divide work to threads
             Thread[] threadsArray = new Thread[tasksLength];
             for (int i = 0; i < tasksLength; i++)
             {
@@ -63,8 +76,10 @@ namespace sortingProject
             }
         }
 
+        //Method used in thread creating. Creates locks  
         private unsafe void startSorting()
         {
+            //pointer to place in dataArray
             IntPtr packedPointer;
             int length = 0;
             while (true)
@@ -73,6 +88,7 @@ namespace sortingProject
                 {
                     if (tasksAlreadyComputed < tasksCount)
                     {
+                        //We've got more work. Get row from array.
                         length = dataArray[(int)tasksAlreadyComputed].Length;
                         fixed (int* ptr = dataArray[(int)tasksAlreadyComputed])
                         {
@@ -85,6 +101,7 @@ namespace sortingProject
                     }
                     tasksAlreadyComputed++;
                 }
+                //start computing
                 sortingMethod.Invoke(sortingObject, new object[] { packedPointer, length });
             }
         }

@@ -6,15 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*
- * Class which are loading and processing input data from user.
- * Author: Jakub'Digitalrasta'Bujny
- * Version: 0.0.0
- * Created: 22.10.2014
- * Changelog:
- */
+
 namespace sortingProject
 {
+    /*
+     * Class which are loading and processing input data from user.
+     * Author: Jakub'Digitalrasta'Bujny
+     * Version: 0.0.0
+     * Created: 22.10.2014
+     * Changelog:
+     */
     class DataLoader
     {
         //Path to file with input data
@@ -24,11 +25,9 @@ namespace sortingProject
             this.filePath = filePath;
         }
 
-        /*
-         * Parsing input file and pack it into 2d int array
-         * separator: sign which is separating numbers in each line
-         * Return: parsed input data
-         */
+         //Parsing input file and pack it into 2d int array
+         //separator: sign which is separating numbers in each line
+         //Return: parsed input data
         public int[][] parseAndLoad(char separator)
         {
             ArrayList parsedLines = new ArrayList(); 
@@ -58,27 +57,25 @@ namespace sortingProject
             }
             catch (System.UnauthorizedAccessException ex)
             {
-                throw new ExceptionInfoToGUI("You don't have permission to input file.");
+                throw new Exceptions.ExceptionInfoToGUI("You don't have permission to input file.");
             }
             catch (System.FormatException ex)
             {
-                throw new ExceptionInfoToGUI("Wrong data format in file.");
+                throw new Exceptions.ExceptionInfoToGUI("Wrong data format in file.");
             }
             catch (Exception ex)
             {
-                throw new ExceptionInfoToGUI("Problem with input file open.");
+                throw new Exceptions.ExceptionInfoToGUI("Problem with input file open.");
             }
         }
 
-        /*
-         * Method used in software testing. Generates random test data.
-         * minSize: min size of input data
-         * maxSize: max size of input data
-         * minBlockSize: min size of input in one block
-         * maxBlockSize: max size of input in one block
-         * minVal: min val to sorting
-         * maxVal: max val to sorting
-         */ 
+         // Method used in software testing. Generates random test data.
+         // minSize: min size of input data
+         // maxSize: max size of input data
+         // minBlockSize: min size of input in one block
+         // maxBlockSize: max size of input in one block
+         // minVal: min val to sorting
+         // maxVal: max val to sorting 
         public static int[][] debug_generateRandomTestData(int minSize, int maxSize, int minBlockSize, int maxBlockSize, int minVal, int maxVal)
         {
             Random randomGenerator = new Random();

@@ -20,11 +20,20 @@ namespace sortingProject
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new mainWindow());
+            if (args.Length == 0)
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainWindow());
+            }
+            else
+            {
+                Testing testObject = new Testing("output.txt");
+                testObject.testCase_changeInputArraySizeAndNumberOfThread(10, 1000, 1000, 2, 128, Testing.DataType.random, Executor.Method.bubble, Executor.Lib.asm);
+            }
+            
         }
     }
 }
