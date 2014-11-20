@@ -20,21 +20,21 @@ namespace sortingProject
     class Executor
     {
         //Array with data from user
-        int[][] dataArray;
+        volatile  int[][] dataArray;
         //available threads to use
-        int availableThreadsCounter;
+        volatile int availableThreadsCounter;
         //tasks left to complete computing
-        int tasksCount;
+        volatile int tasksCount;
         //Number of tasks already computed
-        int tasksAlreadyComputed = 0;
+        volatile int tasksAlreadyComputed = 0;
         //Iterating on dataArray
         volatile int dataArrayIterator = 0;
         //Object for threads synchro
-        Object lockingObject = new Object();
+        volatile Object lockingObject = new Object();
         //Method to use
-        MethodInfo sortingMethod;
+        volatile MethodInfo sortingMethod;
         //Object containing sortingMethod
-        Sorting sortingObject;
+        volatile Sorting sortingObject;
 
         //Standard constructor.
         //numberOfThreads: to use in computing
@@ -68,10 +68,10 @@ namespace sortingProject
             for (int i = 0; i < tasksLength; i++)
             {
                 threadsArray[i] = new Thread(new ThreadStart(startSorting));
-                threadsArray[i].Start();
             }
             for (int i = 0; i < tasksLength; i++)
             {
+                threadsArray[i].Start();
                 threadsArray[i].Join();
             }
         }
@@ -89,8 +89,8 @@ namespace sortingProject
                     if (tasksAlreadyComputed < tasksCount)
                     {
                         //We've got more work. Get row from array.
-                        length = dataArray[(int)tasksAlreadyComputed].Length;
-                        fixed (int* ptr = dataArray[(int)tasksAlreadyComputed])
+                        length = dataArray[tasksAlreadyComputed].Length;
+                        fixed (int* ptr = dataArray[tasksAlreadyComputed])
                         {
                             packedPointer = new IntPtr(ptr);
                         }

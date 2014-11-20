@@ -31,7 +31,7 @@ namespace sortingProject
             else
             {
                 Testing testObject = new Testing("output.txt");
-                testObject.testCase_changeInputArraySizeAndNumberOfThread(10, 1000, 1000, 2, 128, Testing.DataType.random, Executor.Method.bubble, Executor.Lib.asm);
+                testObject.testCase_changeInputArraySizeAndNumberOfThread(140, 1000, 1000, 2, 128, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.asm);
             }
             
         }

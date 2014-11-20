@@ -12,6 +12,7 @@ namespace sortingProject
     {
 
         String outputFilePath;
+        volatile int[][] dataArray;
         StreamWriter fileToWrite;
         public Testing(String outputFilePath)
         {
@@ -50,7 +51,7 @@ namespace sortingProject
                 fileToWrite.WriteLine("---------------");
                 for (int j = sizeFrom; j < sizeTo; j++)
                 {
-                    int[][] dataArray = generateData(j, blockSize, DataType.random);
+                    dataArray = generateData(j, blockSize, type);
                     int[][] sortedArray = createSorted(dataArray);
                     long result = 0;
                     try
@@ -64,28 +65,31 @@ namespace sortingProject
                     } catch(Exceptions.ExceptionArrayComparison e)
                     {
                         fileToWrite.WriteLine("Comparison error!!");
+                        fileToWrite.Flush();
+                        fileToWrite.Close();
                         return false;
                     }
                     fileToWrite.WriteLine(j+";"+result);
+                    fileToWrite.Flush();
                 }
            }
+            fileToWrite.Flush();
             fileToWrite.Close();
             return true;
         }
 
         private long testMethod(int[][] inputArray, int[][] sortedArrayToCheck, int numberOfThreads, Executor.Lib lib, Executor.Method method)
         {
-            int[][] testArray = inputArray.Select(a => a.ToArray()).ToArray();
-            Executor testExec = new Executor(testArray, numberOfThreads, lib, method);
+            Executor testExec = new Executor(inputArray, numberOfThreads, lib, method);
             Stopwatch watch = Stopwatch.StartNew();
             testExec.start();
             watch.Stop();
             long elapsedMs = watch.ElapsedMilliseconds;
-            for (int i = 0; i < testArray.Length; i++)
+            for (int i = 0; i < inputArray.Length; i++)
             {
-                for (int j = 0; j < testArray[i].Length; j++)
+                for (int j = 0; j < inputArray[i].Length; j++)
                 {
-                    if (testArray[i][j] != sortedArrayToCheck[i][j])
+                    if (inputArray[i][j] != sortedArrayToCheck[i][j])
                     {
                         throw new Exceptions.ExceptionArrayComparison();
                     }
@@ -94,9 +98,10 @@ namespace sortingProject
             return elapsedMs;
         }
 
+
         private void openFileAndAddHeader(String testType, String testParameters, String outputFormat)
         {
-            fileToWrite = new System.IO.StreamWriter(outputFilePath);
+            fileToWrite = File.AppendText(outputFilePath);
             fileToWrite.WriteLine("------------------------------------------------------");
             fileToWrite.WriteLine(DateTime.Now.ToString(@"M/d/yyyy hh:mm:ss tt"));
             fileToWrite.WriteLine(testType);
@@ -137,7 +142,8 @@ namespace sortingProject
                         toReturn[i] = new int[rowSize];
                         for (int j = 0; j < rowSize; j++)
                         {
-                            toReturn[i][j] = rand.Next();
+                            int number = rand.Next();
+                            toReturn[i][j] = number;
                         }
                     }
                     break;
@@ -147,7 +153,7 @@ namespace sortingProject
 
         private int[][] createSorted(int[][] inputData)
         {
-            int[][] sortedArray = inputData.Select(a => a.ToArray()).ToArray();
+            int[][] sortedArray = arrayCopy2d(inputData);
             for (int i = 0; i < sortedArray.Length; i++)
             {
                 Array.Sort(sortedArray[i]);
@@ -155,6 +161,16 @@ namespace sortingProject
             return sortedArray;
         }
 
+        private int[][] arrayCopy2d(int[][] source)
+        {
+            int[][] toReturn = new int[source.Length][];
+            for (int i = 0; i < toReturn.Length; i++)
+            {
+                toReturn[i] = new int[source[i].Length];
+                Array.Copy(source[i], toReturn[i], source[i].Length);
+            }
+            return toReturn;
+        }
         public enum DataType
         {
             random,
