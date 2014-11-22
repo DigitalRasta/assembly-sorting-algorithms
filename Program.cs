@@ -31,7 +31,32 @@ namespace sortingProject
             else
             {
                 Testing testObject = new Testing("output.txt");
-                testObject.testCase_changeInputArraySizeAndNumberOfThread(140, 1000, 1000, 2, 128, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.asm);
+                try
+                {
+                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.bubble, Executor.Lib.asm);
+                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.bubble, Executor.Lib.cs);
+
+                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.asm);
+                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.cs);
+
+                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.quick, Executor.Lib.asm);
+                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.quick, Executor.Lib.cs);
+                
+                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
+                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
+
+                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
+                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
+
+                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
+                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
+                }
+                catch (Exception e)
+                {
+                    System.IO.File.WriteAllText("error.txt", e.ToString());
+                }
+                //testObject.testCase_changeBlockSize(200, 21000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
+                //testObject.testCase_changeBlockSize(200, 21000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.cs);
             }
             
         }

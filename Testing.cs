@@ -19,24 +19,51 @@ namespace sortingProject
             this.outputFilePath = outputFilePath;
         }
 
-        public void testAllMethodsWithTimes(int[][] inputArray, int[][] sortedArrayToCheck, int numberOfThreads)
+        public bool testCase_changeBlockSize(int sizeFrom, int sizeTo, int dataSize, int threadsNum, DataType type, Executor.Method method, Executor.Lib lib)
         {
-            testMethod(inputArray, sortedArrayToCheck, numberOfThreads, Executor.Lib.asm, Executor.Method.bubble);
-            testMethod(inputArray, sortedArrayToCheck, numberOfThreads, Executor.Lib.cs, Executor.Method.bubble);
-
-            testMethod(inputArray, sortedArrayToCheck, numberOfThreads, Executor.Lib.asm, Executor.Method.insert);
-            testMethod(inputArray, sortedArrayToCheck, numberOfThreads, Executor.Lib.cs, Executor.Method.insert);
-
-            testMethod(inputArray, sortedArrayToCheck, numberOfThreads, Executor.Lib.asm, Executor.Method.quick);
-            testMethod(inputArray, sortedArrayToCheck, numberOfThreads, Executor.Lib.cs, Executor.Method.quick);
+            try
+            {
+                openFileAndAddHeader("Change block size.", "lib: "+lib+" method: "+method+" sizeFrom: "+sizeFrom+" sizeTo: " + sizeTo +
+                    " threadsNum: " + threadsNum + " data type: " + type + " data size: " + dataSize, "size;time" );
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            for (int i = sizeFrom; i < sizeTo; i+=200)
+            {
+                long result = 0;
+                try
+                {
+                    long avr = 0;
+                    for (int k = 0; k < 5; k++)
+                    {
+                        dataArray = generateData(dataSize, i, type);
+                        int[][] sortedArray = createSorted(dataArray);
+                        avr += testMethod(dataArray, sortedArray, i, lib, method);
+                    }
+                    result = avr / 5;
+                }
+                catch (Exceptions.ExceptionArrayComparison e)
+                {
+                    fileToWrite.WriteLine("Comparison error!!");
+                    fileToWrite.Flush();
+                    fileToWrite.Close();
+                    return false;
+                }
+                fileToWrite.WriteLine(i + ";" + result);
+                fileToWrite.Flush();
+            }
+            fileToWrite.Flush();
+            fileToWrite.Close();
+            return true;
         }
-
 
         public bool testCase_changeInputArraySizeAndNumberOfThread(int sizeFrom, int sizeTo, int blockSize, int threadsFrom, int threadsTo,
             DataType type, Executor.Method method, Executor.Lib lib) {
             try
             {
-                openFileAndAddHeader("Change input array size and num of threads.", "sizeFrom: "+sizeFrom+" sizeTo: " + sizeTo +
+                openFileAndAddHeader("Change input array size and num of threads.", "lib: "+lib+" method: "+method+" sizeFrom: "+sizeFrom+" sizeTo: " + sizeTo +
                     " threadsFrom: " + threadsFrom + " threadsTo: " + threadsTo + " data type: " + type + " block size: " + blockSize, "size;time" );
             }
             catch (Exception e)
@@ -44,21 +71,21 @@ namespace sortingProject
                 return false;
             }
             
-            for (int i = threadsFrom; i < threadsTo; i++)
+            for (int i = threadsFrom; i < threadsTo+1; i=i*2)
             {
                 fileToWrite.WriteLine("---------------");
-                fileToWrite.WriteLine("Threads number: " + i);
+                fileToWrite.WriteLine("Threads count: " + i);
                 fileToWrite.WriteLine("---------------");
                 for (int j = sizeFrom; j < sizeTo; j++)
                 {
-                    dataArray = generateData(j, blockSize, type);
-                    int[][] sortedArray = createSorted(dataArray);
                     long result = 0;
                     try
                     {
                         long avr = 0;
                         for (int k = 0; k < 5; k++)
                         {
+                            dataArray = generateData(j, blockSize, type);
+                            int[][] sortedArray = createSorted(dataArray);
                             avr += testMethod(dataArray, sortedArray, i, lib, method);
                         }
                         result = avr / 5;

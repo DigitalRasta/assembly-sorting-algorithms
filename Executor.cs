@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace sortingProject
     {
         //Array with data from user
         volatile  int[][] dataArray;
+
+        GCHandle[] inputArrayMemoryHandle;
         //available threads to use
         volatile int availableThreadsCounter;
         //tasks left to complete computing
@@ -36,17 +39,33 @@ namespace sortingProject
         //Object containing sortingMethod
         volatile Sorting sortingObject;
 
+        Method methodType;
+
         //Standard constructor.
         //numberOfThreads: to use in computing
         //library: C# or ASM
         //method: bubble/insert/quick
-        public Executor(int[][] inputArray, int numberOfThreads, Lib library, Method method)
+        public unsafe Executor(int[][] inputArray, int numberOfThreads, Lib library, Method method)
         {
             this.dataArray = inputArray;
+            inputArrayMemoryHandle = new GCHandle[this.dataArray.Length];
+            for (int i = 0; i < inputArray.Length; i++)
+            {
+                inputArrayMemoryHandle[i] = GCHandle.Alloc(this.dataArray[i], GCHandleType.Pinned);
+            }
+                
             this.availableThreadsCounter = numberOfThreads;
             this.tasksCount = inputArray.Length;
             sortingObject = new Sorting();
             sortingMethod = sortingObject.GetType().GetMethod(library + "_" + method);
+            methodType = method;
+        }
+
+        ~Executor() {
+            for (int i = 0; i < this.dataArray.Length; i++)
+            {
+                inputArrayMemoryHandle[i].Free();
+            }
         }
 
         //Start computing. Creates threads and divide work.
@@ -67,11 +86,18 @@ namespace sortingProject
             Thread[] threadsArray = new Thread[tasksLength];
             for (int i = 0; i < tasksLength; i++)
             {
-                threadsArray[i] = new Thread(new ThreadStart(startSorting));
+                if (methodType == Method.quick)
+                {
+                    threadsArray[i] = new Thread(new ThreadStart(startSorting), 104857600);
+                }
+                else
+                {
+                    threadsArray[i] = new Thread(new ThreadStart(startSorting));
+                }
+                threadsArray[i].Start();
             }
             for (int i = 0; i < tasksLength; i++)
             {
-                threadsArray[i].Start();
                 threadsArray[i].Join();
             }
         }
