@@ -33,23 +33,23 @@ namespace sortingProject
                 Testing testObject = new Testing("output.txt");
                 try
                 {
-                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.bubble, Executor.Lib.asm);
-                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.bubble, Executor.Lib.cs);
+                    //testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.bubble, Executor.Lib.asm);
+                    //testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.bubble, Executor.Lib.cs);
 
-                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.asm);
-                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.cs);
+                    //testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.asm);
+                    //testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 32, 64, Testing.DataType.reverseSorted, Executor.Method.insert, Executor.Lib.cs);
 
-                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.quick, Executor.Lib.asm);
-                    testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.quick, Executor.Lib.cs);
+                    //testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 2, 64, Testing.DataType.reverseSorted, Executor.Method.quick, Executor.Lib.asm);
+                    //testObject.testCase_changeInputArraySizeAndNumberOfThread(100, 300, 2000, 16, 64, Testing.DataType.reverseSorted, Executor.Method.quick, Executor.Lib.cs);
                 
-                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
-                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
+                    //testObject.testCase_changeBlockSize(1000, 300000, 20, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
+                    //testObject.testCase_changeBlockSize(1000, 300000, 20, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.cs);
+                    
+                    //testObject.testCase_changeBlockSize(1000, 300000, 20, 4, Testing.DataType.random, Executor.Method.bubble, Executor.Lib.asm);
+                    //testObject.testCase_changeBlockSize(1000, 46000, 20, 4, Testing.DataType.random, Executor.Method.bubble, Executor.Lib.cs);
 
-                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
-                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
-
-                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
-                    testObject.testCase_changeBlockSize(200, 30000, 50, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
+                    //testObject.testCase_changeBlockSize(1000, 300000, 20, 4, Testing.DataType.random, Executor.Method.insert, Executor.Lib.asm);
+                    testObject.testCase_changeBlockSize(100000, 10000000, 20, 4, Testing.DataType.random, Executor.Method.quick, Executor.Lib.asm);
                 }
                 catch (Exception e)
                 {

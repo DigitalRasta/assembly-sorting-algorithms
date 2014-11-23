@@ -88,7 +88,7 @@ namespace sortingProject
             {
                 if (methodType == Method.quick)
                 {
-                    threadsArray[i] = new Thread(new ThreadStart(startSorting), 104857600);
+                    threadsArray[i] = new Thread(new ThreadStart(startSorting), 52428800);
                 }
                 else
                 {

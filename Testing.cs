@@ -30,7 +30,7 @@ namespace sortingProject
             {
                 return false;
             }
-            for (int i = sizeFrom; i < sizeTo; i+=200)
+            for (int i = sizeFrom; i < sizeTo; i+=100000)
             {
                 long result = 0;
                 try
