@@ -139,6 +139,7 @@ namespace sortingProject
             
             text_exTime.Text = currentExTime.ToString();
             text_prTime.Text = previousExTime.ToString();
+
         }
 
         private void label4_Click(object sender, EventArgs e)

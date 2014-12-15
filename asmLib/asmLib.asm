@@ -20,7 +20,8 @@ asm_bubble proc uses ecx ebx eax esi edx edi pointer:DWORD, len:DWORD
 	mul len		                           ; integer is 32bit = 4 bytes, so multiply length of array by 4
 	mov edx, eax						   ; store new length value
 	mov esi, pointer					   ; store pointer in register for addressing
-	FirstLoop:				       
+	FirstLoop:
+		push edx				       
 		cmp edx, ebx					   ; check loop condition, edx=len*4, ebx is iterator
 		jng EndSort
 		SecondLoopPrepare:
@@ -37,14 +38,15 @@ asm_bubble proc uses ecx ebx eax esi edx edi pointer:DWORD, len:DWORD
 				sub eax, DWORD PTR [esi+ecx+4] ;
 				jl EndSecondLoopIteration  ; jump if not
 				mov eax, DWORD PTR [esi+ecx+4] ; case: currentElement > nextElement, we must swap
-				push DWORD PTR [esi+ecx]	   ; swapping by stack because we can't do mov mem,mem
-				pop DWORD PTR [esi+ecx+4]
+				mov edx, DWORD PTR [esi+ecx] ; swapping
+				mov DWORD PTR [esi+ecx+4], edx
 				mov DWORD PTR [esi+ecx], eax
 				EndSecondLoopIteration:
 					add ecx, 4			   ; incrase iterator by 4 (remeber about 32bit=4bytes)
 					jmp SecondLoop
 		EndSecondLoop:
 		add ebx, 4						   ; incrase iterator by 4 (remeber about 32bit=4bytes)
+		pop edx
 		jmp FirstLoop
 	EndSort:
 	ret
@@ -62,7 +64,8 @@ asm_insert proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
 	mul len		                           ; integer is 32bit = 4 bytes, so multiply length of array by 4
 	mov edx, eax						   ; store new length value
 	mov esi, pointer					   ; store pointer in register for addressing
-	FirstLoop:				       
+	FirstLoop:
+					       
 		cmp edx, ebx					   ; check loop condition, edx=len*4, ebx is iterator
 		jng EndSort
 		mov edi, [esi+ebx]				   ; store pointer[ebx] in temp
@@ -74,8 +77,8 @@ asm_insert proc uses ecx ebx eax edx esi edi pointer:DWORD, len:DWORD
 			jl EndSecondLoop
 			cmp edi, [esi+ecx]			   ; check second condtion, end if edi(temp) >= pointer[ecx] 
 			jnl EndSecondLoop
-			push DWORD PTR [esi+ecx]	   ; swapping by stack because we can't do mov mem,mem
-			pop DWORD PTR [esi+ecx+4]
+			mov eax, DWORD PTR [esi+ecx]	   ; swapping by stack because we can't do mov mem,mem
+			mov DWORD PTR [esi+ecx+4], eax
 			sub ecx, 4					   ; decrease second loop iterator
 			jmp SecondLoop
 		EndSecondLoop:
@@ -123,14 +126,14 @@ asm_quick_rec proc uses ecx ebx eax edx esi edi pointer:DWORD, lowp:DWORD, highp
 		cmp ecx, ebx
 		jge MainLoop
 		mov edi, [esi+ecx]
-		push [esi+ebx]
-		pop [esi+ecx]
+		mov eax, [esi+ebx]
+		mov [esi+ecx], eax
 		mov [esi+ebx], edi
 		jmp MainLoop
 	EndMainLoop:
 		mov edi, [esi+edx]
-		push [esi+ebx]
-		pop [esi+edx]
+		mov eax, [esi+ebx]
+		mov [esi+edx], eax
 		mov [esi+ebx], edi
 		mov eax, ebx
 		sub eax, 4
