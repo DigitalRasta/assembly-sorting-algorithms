@@ -142,7 +142,7 @@ namespace sortingProject
             Random randomGenerator = new Random(randomSeed);
             for (int i = 0; i < asmArray.Length; i++)
             {
-                int randomVal = randomGenerator.Next();
+                int randomVal = -randomGenerator.Next();
                 //int randomVal = 10-i;
                 asmArray[i] = randomVal;
                 csArray[i] = randomVal;

@@ -43,6 +43,8 @@
             this.text_exTime = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.combo_method = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.text_prTime = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -130,7 +132,7 @@
             "ASM"});
             this.combo_lib.Location = new System.Drawing.Point(296, 90);
             this.combo_lib.Name = "combo_lib";
-            this.combo_lib.Size = new System.Drawing.Size(52, 32);
+            this.combo_lib.Size = new System.Drawing.Size(64, 32);
             this.combo_lib.TabIndex = 6;
             // 
             // label3
@@ -167,16 +169,17 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(37, 178);
+            this.label4.Location = new System.Drawing.Point(2, 181);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(140, 24);
+            this.label4.Size = new System.Drawing.Size(244, 24);
             this.label4.TabIndex = 10;
-            this.label4.Text = "Execution time:";
+            this.label4.Text = "Execution time current [ms]:";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // text_exTime
             // 
             this.text_exTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.text_exTime.Location = new System.Drawing.Point(187, 174);
+            this.text_exTime.Location = new System.Drawing.Point(262, 177);
             this.text_exTime.Name = "text_exTime";
             this.text_exTime.ReadOnly = true;
             this.text_exTime.Size = new System.Drawing.Size(270, 31);
@@ -186,7 +189,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label5.Location = new System.Drawing.Point(354, 93);
+            this.label5.Location = new System.Drawing.Point(366, 93);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(74, 24);
             this.label5.TabIndex = 12;
@@ -200,16 +203,37 @@
             "bubble",
             "insert",
             "quick"});
-            this.combo_method.Location = new System.Drawing.Point(434, 90);
+            this.combo_method.Location = new System.Drawing.Point(446, 90);
             this.combo_method.Name = "combo_method";
-            this.combo_method.Size = new System.Drawing.Size(109, 32);
+            this.combo_method.Size = new System.Drawing.Size(97, 32);
             this.combo_method.TabIndex = 13;
             // 
-            // mainWindow
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label6.Location = new System.Drawing.Point(3, 223);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(257, 24);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Execution time previous [ms]:";
+            // 
+            // text_prTime
+            // 
+            this.text_prTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.text_prTime.Location = new System.Drawing.Point(262, 219);
+            this.text_prTime.Name = "text_prTime";
+            this.text_prTime.ReadOnly = true;
+            this.text_prTime.Size = new System.Drawing.Size(270, 31);
+            this.text_prTime.TabIndex = 15;
+            // 
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 212);
+            this.ClientSize = new System.Drawing.Size(544, 256);
+            this.Controls.Add(this.text_prTime);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.combo_method);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.text_exTime);
@@ -224,7 +248,7 @@
             this.Controls.Add(this.button_openFile);
             this.Controls.Add(this.text_sourceFile);
             this.Controls.Add(this.label_sourceFile);
-            this.Name = "mainWindow";
+            this.Name = "MainWindow";
             this.Text = "Sorting Algorithms";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -248,6 +272,8 @@
         private System.Windows.Forms.TextBox text_exTime;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox combo_method;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox text_prTime;
     }
 }
 

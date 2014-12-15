@@ -19,7 +19,8 @@ namespace sortingProject
             this.outputFilePath = outputFilePath;
         }
 
-        public bool testCase_changeBlockSize(int sizeFrom, int sizeTo, int dataSize, int threadsNum, DataType type, Executor.Method method, Executor.Lib lib)
+        public bool testCase_changeBlockSize(int sizeFrom, int sizeTo, int dataSize,
+            int threadsNum, DataType type, Executor.Method method, Executor.Lib lib)
         {
             try
             {
@@ -59,8 +60,8 @@ namespace sortingProject
             return true;
         }
 
-        public bool testCase_changeInputArraySizeAndNumberOfThread(int sizeFrom, int sizeTo, int blockSize, int threadsFrom, int threadsTo,
-            DataType type, Executor.Method method, Executor.Lib lib) {
+        public bool testCase_changeInputArraySizeAndNumberOfThread(int sizeFrom, int sizeTo, int blockSize, 
+            int threadsFrom, int threadsTo, DataType type, Executor.Method method, Executor.Lib lib) {
             try
             {
                 openFileAndAddHeader("Change input array size and num of threads.", "lib: "+lib+" method: "+method+" sizeFrom: "+sizeFrom+" sizeTo: " + sizeTo +
@@ -105,7 +106,8 @@ namespace sortingProject
             return true;
         }
 
-        private long testMethod(int[][] inputArray, int[][] sortedArrayToCheck, int numberOfThreads, Executor.Lib lib, Executor.Method method)
+        private long testMethod(int[][] inputArray, int[][] sortedArrayToCheck,
+            int numberOfThreads, Executor.Lib lib, Executor.Method method)
         {
             Executor testExec = new Executor(inputArray, numberOfThreads, lib, method);
             Stopwatch watch = Stopwatch.StartNew();

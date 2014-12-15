@@ -13,7 +13,10 @@ namespace sortingProject
         Object csharp_sortingObject;
 
         public Sorting() {
-            var DLL = Assembly.LoadFile(@"C:\Users\Jakubek\workspaces\JA\sortingProject\csharpLib\bin\Debug\csharpLib.dll");
+            String path = (new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath;
+            String[] splitPath = path.Split('/');
+            String goodPath = path.Substring(0, path.Length - splitPath[splitPath.Length - 1].Length);
+            var DLL = Assembly.LoadFile(goodPath+"csharpLib.dll");
             var type = DLL.GetType("csharpLib.Sorting");
             csharp_sortingObject = Activator.CreateInstance(type);
             asm_testDll();
@@ -39,16 +42,16 @@ namespace sortingProject
             method.Invoke(csharp_sortingObject, new object[] { packedPointer, length });
         }
 
-        [DllImport(@"asmLib.dll")]
+        [DllImport("asmLib.dll")]
         public unsafe static extern void asm_bubble(int* pointer, int length);
 
-        [DllImport(@"asmLib.dll")]
+        [DllImport("asmLib.dll")]
         public unsafe static extern void asm_insert(int* pointer, int length);
 
-        [DllImport(@"asmLib.dll")]
+        [DllImport("asmLib.dll")]
         public unsafe static extern void asm_quick(int* pointer, int length);
 
-        [DllImport(@"asmLib.dll")]
+        [DllImport("asmLib.dll")]
         public unsafe static extern void asm_testDll();
     }
 }

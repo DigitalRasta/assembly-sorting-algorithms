@@ -69,6 +69,29 @@ namespace sortingProject
             }
         }
 
+        public void saveToFile(int[][] dataToSave, String nameOfFile)
+        {
+            if (nameOfFile.Equals(""))
+            {
+                return;
+            }
+            StreamWriter writeToFile = new StreamWriter(nameOfFile, true);
+            for (int i = 0; i < dataToSave.Length; i++)
+            {
+                String lineToWrite = "";
+                for (int j = 0; j < dataToSave[i].Length; j++)
+                {
+                    lineToWrite += dataToSave[i][j].ToString();
+                    if (j == dataToSave[i].Length-1) {
+                        continue;
+                    }
+                    lineToWrite += ";";
+                }
+                writeToFile.WriteLine(lineToWrite);
+            }
+            writeToFile.Close();
+        }
+
          // Method used in software testing. Generates random test data.
          // minSize: min size of input data
          // maxSize: max size of input data

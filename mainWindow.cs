@@ -63,13 +63,21 @@ namespace sortingProject
         }
 
         private String vaildateUserInput() {
-            //todo: method content
-            return "OK";
+            if (text_sourceFile.Text.Length > 0)
+            {
+                return "OK";
+            }
+            else
+            {
+                return "You must select input file!";
+            }
         }
 
+        private long currentExTime = -1;
+        private long previousExTime = -1;
         private void button_start_Click(object sender, EventArgs e)
         {
-            /*String validation = vaildateUserInput();
+            String validation = vaildateUserInput();
             if (validation != "OK")
             {
                 MessageBox.Show(validation);
@@ -81,19 +89,61 @@ namespace sortingProject
             {
                 inputData = loader.parseAndLoad(';');
             }
-            catch (ExceptionInfoToGUI ex)
+            catch (Exceptions.ExceptionInfoToGUI ex)
             {
                 MessageBox.Show(ex.getMessage());
                 return;
-            }*/
-            int[][] inputData = DataLoader.debug_generateRandomTestData(300, 3000, 8000, 12000, 1, 30000);
-            int[][] sortedArray = inputData.Select(a => a.ToArray()).ToArray();
-            for (int i = 0; i < sortedArray.Length; i++)
-            {
-                Array.Sort(sortedArray[i]);
             }
-            //Testing testObject = new Testing();
-            //testObject.testAllMethodsWithTimes(inputData, sortedArray, 4);
+            if (currentExTime != -1)
+            {
+                previousExTime = currentExTime;
+            }
+            Executor.Lib selectedLib;
+            Executor.Method selectedMethod;
+            if(combo_lib.SelectedItem.ToString().Equals("C#")) {
+                selectedLib = Executor.Lib.cs;
+            } else {
+                selectedLib = Executor.Lib.asm;
+            }
+
+            if(combo_method.SelectedItem.ToString().Equals("bubble")) {
+                selectedMethod = Executor.Method.bubble;
+            } else if(combo_method.SelectedItem.ToString().Equals("insert")) {
+                selectedMethod = Executor.Method.insert;
+            } else {
+                selectedMethod = Executor.Method.quick;
+            }
+
+            Executor execIt;
+            try
+            {
+                execIt = new Executor(inputData, int.Parse(combo_numThreads.SelectedItem.ToString()), selectedLib, selectedMethod);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problem while loading dlls!");
+                return;
+            }
+            Stopwatch watch = Stopwatch.StartNew();
+            execIt.start();
+            watch.Stop();
+            currentExTime = watch.ElapsedMilliseconds;
+            try
+            {
+                loader.saveToFile(inputData, text_outputFile.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot save to file!");
+            }
+            
+            text_exTime.Text = currentExTime.ToString();
+            text_prTime.Text = previousExTime.ToString();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
