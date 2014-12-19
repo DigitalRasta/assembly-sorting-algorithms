@@ -8,10 +8,24 @@ using System.Threading.Tasks;
 
 namespace sortingProject
 {
+
+    /*
+    * Description:  Class containing sorting methods loaded from DLLs
+    * Author: Jakub'Digitalrasta'Bujny
+    * Version: 0.2.1
+    * Changelog:
+    *      0.0.0: added c# methods
+    *      0.1.0: added asm methods
+    *      0.2.0: upgrade of c# dll loader
+     *     0.2.1: fixed problem with path to c# dll
+    */
     class Sorting
     {
         Object csharp_sortingObject;
 
+        /*
+         * Description: standard constructor. Load c# dll from exe directory. Test connection with ASM dll.
+         */
         public Sorting() {
             String path = (new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath;
             String[] splitPath = path.Split('/');

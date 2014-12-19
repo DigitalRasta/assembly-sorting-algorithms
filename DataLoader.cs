@@ -9,25 +9,39 @@ using System.Threading.Tasks;
 
 namespace sortingProject
 {
+
     /*
-     * Class which are loading and processing input data from user.
-     * Author: Jakub'Digitalrasta'Bujny
-     * Version: 0.0.0
-     * Created: 22.10.2014
-     * Changelog:
-     */
+    * Description:  Class which are loading and processing input data from user.
+    * Author: Jakub'Digitalrasta'Bujny
+    * Version: 0.3.0
+    * Changelog:
+    *      0.0.0: added parsing and loading method
+    *      0.1.0: added save to file method
+    *      0.2.0: added debug method for generating random data
+     *     0.2.1: fixed problem in saving to file (not closing file)
+     *     0.3.0: removed debug method
+    */
     class DataLoader
     {
         //Path to file with input data
         private String filePath;
+
+        /*
+         * Description: standard setting constructor
+         * Arguments:
+         * filePath - path to file to load data
+         */
         public DataLoader(String filePath)
         {
             this.filePath = filePath;
         }
 
-         //Parsing input file and pack it into 2d int array
-         //separator: sign which is separating numbers in each line
-         //Return: parsed input data
+        /*
+        * Description: Parsing input file and pack it into 2d int array
+        * Arguments:
+        * separator - sign which is separating numbers in each line
+        * Return: parsed input data
+        */
         public int[][] parseAndLoad(char separator)
         {
             ArrayList parsedLines = new ArrayList(); 
@@ -69,6 +83,12 @@ namespace sortingProject
             }
         }
 
+        /*
+        * Description: Saving 2D array to file and append mode
+        * Arguments:
+        * dataToSave - 2D array to save
+        * nameOfFile - name of file to save
+        */
         public void saveToFile(int[][] dataToSave, String nameOfFile)
         {
             if (nameOfFile.Equals(""))
@@ -90,30 +110,6 @@ namespace sortingProject
                 writeToFile.WriteLine(lineToWrite);
             }
             writeToFile.Close();
-        }
-
-         // Method used in software testing. Generates random test data.
-         // minSize: min size of input data
-         // maxSize: max size of input data
-         // minBlockSize: min size of input in one block
-         // maxBlockSize: max size of input in one block
-         // minVal: min val to sorting
-         // maxVal: max val to sorting 
-        public static int[][] debug_generateRandomTestData(int minSize, int maxSize, int minBlockSize, int maxBlockSize, int minVal, int maxVal)
-        {
-            Random randomGenerator = new Random();
-            int globalSize = randomGenerator.Next(minSize, maxSize);
-            int[][] toReturn = new int[globalSize][];
-            for (int i = 0; i < toReturn.Length; i++)
-            {
-                int innerSize = randomGenerator.Next(minBlockSize, maxBlockSize);
-                toReturn[i] = new int[innerSize];
-                for (int j = 0; j < toReturn[i].Length; j++)
-                {
-                    toReturn[i][j] = randomGenerator.Next(minVal, maxVal);
-                }
-            }
-            return toReturn;
         }
     }
 }

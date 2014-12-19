@@ -10,19 +10,26 @@ using System.Threading.Tasks;
 
 namespace sortingProject
 {
+
     /*
-    * Class with program logic. Process data from user input, creates threads, manage them
+    * Description:  Class with program logic. Process data from user input, creates threads, manage them
     * and execute computing functions from libs
     * Author: Jakub'Digitalrasta'Bujny
-    * Version: 0.0.0
-    * Created: 22.10.2014
+    * Version: 0.5.0
     * Changelog:
+    *      0.0.0: added basic method for start computing
+    *      0.0.1: fixed problem with thread barrier
+    *      0.2.0: reflection concept of invoking method
+     *     0.3.0: added debug method for testing
+     *     0.4.0: added destructor and memory pinning
+     *     0.5.0: removed debug method
     */
     class Executor
     {
         //Array with data from user
         volatile  int[][] dataArray;
 
+        //Handler for pinning memory
         GCHandle[] inputArrayMemoryHandle;
         //available threads to use
         volatile int availableThreadsCounter;
@@ -38,13 +45,17 @@ namespace sortingProject
         volatile MethodInfo sortingMethod;
         //Object containing sortingMethod
         volatile Sorting sortingObject;
-
+        //sorting method
         Method methodType;
 
-        //Standard constructor.
-        //numberOfThreads: to use in computing
-        //library: C# or ASM
-        //method: bubble/insert/quick
+        /*
+        * Description: Standard constructor which is pinning memory and set params
+        * Arguments:
+        * inputArray - array with input data
+        * numberOfThreads - number of computing threads
+        * library - library: c#/ASM
+        * method - bubble/insert/quick
+        */
         public unsafe Executor(int[][] inputArray, int numberOfThreads, Lib library, Method method)
         {
             this.dataArray = inputArray;
@@ -61,6 +72,9 @@ namespace sortingProject
             methodType = method;
         }
 
+        /*
+        * Description: Destructor. Free memory
+        */
         ~Executor() {
             for (int i = 0; i < this.dataArray.Length; i++)
             {
@@ -68,7 +82,9 @@ namespace sortingProject
             }
         }
 
-        //Start computing. Creates threads and divide work.
+        /*
+        * Description: Start computing. Creates threads and divide work.
+        */
         public void start()
         {
             int tasksLength = 0;
@@ -102,7 +118,9 @@ namespace sortingProject
             }
         }
 
-        //Method used in thread creating. Creates locks  
+        /*
+        * Description: Method used in thread creating. Creates locks 
+        */
         private unsafe void startSorting()
         {
             //pointer to place in dataArray
@@ -130,53 +148,6 @@ namespace sortingProject
                 //start computing
                 sortingMethod.Invoke(sortingObject, new object[] { packedPointer, length });
             }
-        }
-
-        public unsafe bool debug_executeAndCompareResult(Executor.Method method)
-        {
-            int arraySize = 10;
-            int[] asmArray = new int[arraySize];
-            int[] csArray = new int[arraySize];
-            int randomSeed = new Random().Next();
-            //int randomSeed = 0;
-            Random randomGenerator = new Random(randomSeed);
-            for (int i = 0; i < asmArray.Length; i++)
-            {
-                int randomVal = -randomGenerator.Next();
-                //int randomVal = 10-i;
-                asmArray[i] = randomVal;
-                csArray[i] = randomVal;
-            }
-            MethodInfo csMethod = sortingObject.GetType().GetMethod("cs_" + method);
-            MethodInfo asmMethod = sortingObject.GetType().GetMethod("asm_" + method);
-            var watch = Stopwatch.StartNew();
-            fixed (int* ptr = csArray)
-            {
-                IntPtr packedPointer = new IntPtr(ptr);
-                csMethod.Invoke(sortingObject, new object[] { packedPointer, csArray.Length });
-            }
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine(method + " cs time: " + elapsedMs);
-
-            watch = Stopwatch.StartNew();
-            fixed (int* ptr = asmArray)
-            {
-                IntPtr packedPointer = new IntPtr(ptr);
-                asmMethod.Invoke(sortingObject, new object[] { packedPointer, asmArray.Length });
-            }
-            watch.Stop();
-            elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine(method + " asm time: " + elapsedMs);
-
-            for (int i = 0; i < asmArray.Length; i++)
-            {
-                if (asmArray[i] != csArray[i])
-                {
-                    throw new Exception("Implementation error. Random seed: " + randomSeed);
-                }
-            }
-            return true;
         }
 
         public enum Lib

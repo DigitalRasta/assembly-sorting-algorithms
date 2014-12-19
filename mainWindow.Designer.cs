@@ -50,7 +50,7 @@
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog1";
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            //this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // label_sourceFile
             // 
@@ -61,7 +61,6 @@
             this.label_sourceFile.Size = new System.Drawing.Size(104, 24);
             this.label_sourceFile.TabIndex = 0;
             this.label_sourceFile.Text = "Source file:";
-            this.label_sourceFile.Click += new System.EventHandler(this.label1_Click);
             // 
             // text_sourceFile
             // 
@@ -174,7 +173,6 @@
             this.label4.Size = new System.Drawing.Size(244, 24);
             this.label4.TabIndex = 10;
             this.label4.Text = "Execution time current [ms]:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // text_exTime
             // 

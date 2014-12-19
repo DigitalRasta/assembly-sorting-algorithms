@@ -8,30 +8,61 @@ using System.Threading.Tasks;
 
 namespace sortingProject
 {
+
+    /*
+   * Description: Class testing performance and correctness of alghorithms 
+   * Author: Jakub'Digitalrasta'Bujny
+   * Version: 0.2.1
+   * Changelog:
+   *      0.0.0: basic correctness testing
+   *      0.1.0: added data generator
+   *      0.2.0: added enum with data type
+   *      0.3.0: added saving to file
+   *      0.3.1: fixed bug while saving to file
+   *      0.4.0: added testing method: change input array size
+   *      0.5.0: added testing method: change block size   
+   */
     class Testing
     {
-
+        //Path to output file
         String outputFilePath;
+        //storing data
         volatile int[][] dataArray;
+        //save to file stream
         StreamWriter fileToWrite;
+        /*
+        * Description: standard setting constructor
+        */
         public Testing(String outputFilePath)
         {
             this.outputFilePath = outputFilePath;
         }
 
+        /*
+        * Description: performance and correctness testing. Change block size
+        * Arguments:
+        * sizeFrom - start point for block size
+        * sizeTo - end point for block size
+        * dataSize - rows count in array
+        * threadsNum - number of used threads
+        * type - type of data
+        * method - which method
+        * lib - which lib
+        * Return: false - fail
+        */
         public bool testCase_changeBlockSize(int sizeFrom, int sizeTo, int dataSize,
             int threadsNum, DataType type, Executor.Method method, Executor.Lib lib)
         {
             try
             {
-                openFileAndAddHeader("Change block size.", "lib: "+lib+" method: "+method+" sizeFrom: "+sizeFrom+" sizeTo: " + sizeTo +
-                    " threadsNum: " + threadsNum + " data type: " + type + " data size: " + dataSize, "size;time" );
+                openFileAndAddHeader("Change block size.", "lib: " + lib + " method: " + method + " sizeFrom: " + sizeFrom + " sizeTo: " + sizeTo +
+                    " threadsNum: " + threadsNum + " data type: " + type + " data size: " + dataSize, "size;time");
             }
             catch (Exception e)
             {
                 return false;
             }
-            for (int i = sizeFrom; i < sizeTo; i+=100000)
+            for (int i = sizeFrom; i < sizeTo; i += 1000)
             {
                 long result = 0;
                 try
@@ -60,19 +91,32 @@ namespace sortingProject
             return true;
         }
 
-        public bool testCase_changeInputArraySizeAndNumberOfThread(int sizeFrom, int sizeTo, int blockSize, 
-            int threadsFrom, int threadsTo, DataType type, Executor.Method method, Executor.Lib lib) {
+        /*
+        * Description: performance and correctness testing. Change rows count.
+        * Arguments:
+        * sizeFrom - start point for rows count
+        * sizeTo - end point for rows count
+        * blockSize - block size in row
+        * threadsNum - number of used threads
+        * type - type of data
+        * method - which method
+        * lib - which lib
+        * Return: false - fail
+        */
+        public bool testCase_changeInputArraySizeAndNumberOfThread(int sizeFrom, int sizeTo, int blockSize,
+            int threadsFrom, int threadsTo, DataType type, Executor.Method method, Executor.Lib lib)
+        {
             try
             {
-                openFileAndAddHeader("Change input array size and num of threads.", "lib: "+lib+" method: "+method+" sizeFrom: "+sizeFrom+" sizeTo: " + sizeTo +
-                    " threadsFrom: " + threadsFrom + " threadsTo: " + threadsTo + " data type: " + type + " block size: " + blockSize, "size;time" );
+                openFileAndAddHeader("Change input array size and num of threads.", "lib: " + lib + " method: " + method + " sizeFrom: " + sizeFrom + " sizeTo: " + sizeTo +
+                    " threadsFrom: " + threadsFrom + " threadsTo: " + threadsTo + " data type: " + type + " block size: " + blockSize, "size;time");
             }
             catch (Exception e)
             {
                 return false;
             }
-            
-            for (int i = threadsFrom; i < threadsTo+1; i=i*2)
+
+            for (int i = threadsFrom; i < threadsTo + 1; i = i * 2)
             {
                 fileToWrite.WriteLine("---------------");
                 fileToWrite.WriteLine("Threads count: " + i);
@@ -90,22 +134,33 @@ namespace sortingProject
                             avr += testMethod(dataArray, sortedArray, i, lib, method);
                         }
                         result = avr / 5;
-                    } catch(Exceptions.ExceptionArrayComparison e)
+                    }
+                    catch (Exceptions.ExceptionArrayComparison e)
                     {
                         fileToWrite.WriteLine("Comparison error!!");
                         fileToWrite.Flush();
                         fileToWrite.Close();
                         return false;
                     }
-                    fileToWrite.WriteLine(j+";"+result);
+                    fileToWrite.WriteLine(j + ";" + result);
                     fileToWrite.Flush();
                 }
-           }
+            }
             fileToWrite.Flush();
             fileToWrite.Close();
             return true;
         }
 
+        /*
+        * Description: one test with correctness check
+        * Arguments:
+        * inputArray - array with input data
+        * sortedArrayToCheck - array for correctness check
+        * numberOfThreads - number of used threads
+        * method - which method
+        * lib - which lib
+        * Return: computing time in ms
+        */
         private long testMethod(int[][] inputArray, int[][] sortedArrayToCheck,
             int numberOfThreads, Executor.Lib lib, Executor.Method method)
         {
@@ -127,7 +182,13 @@ namespace sortingProject
             return elapsedMs;
         }
 
-
+        /*
+        * Description: open file and add test header to it
+        * Arguments:
+        * testType - name of testing method
+        * testParameters - testing conditions
+        * outputFormat - information about output format
+        */
         private void openFileAndAddHeader(String testType, String testParameters, String outputFormat)
         {
             fileToWrite = File.AppendText(outputFilePath);
@@ -139,6 +200,14 @@ namespace sortingProject
             fileToWrite.WriteLine(outputFormat);
         }
 
+        /*
+        * Description: generate data for tests
+        * Arguments:
+        * rowCount - number of rows to generate
+        * rowSize - length of row
+        * type - data type
+        * Return: generated array
+        */
         private int[][] generateData(int rowCount, int rowSize, DataType type)
         {
             int[][] toReturn = new int[rowCount][];
@@ -153,16 +222,16 @@ namespace sortingProject
                             toReturn[i][j] = j;
                         }
                     }
-                        break;
+                    break;
                 case DataType.reverseSorted:
-                        for (int i = 0; i < rowCount; i++)
+                    for (int i = 0; i < rowCount; i++)
+                    {
+                        toReturn[i] = new int[rowSize];
+                        for (int j = 0; j < rowSize; j++)
                         {
-                            toReturn[i] = new int[rowSize];
-                            for (int j = 0; j < rowSize; j++)
-                            {
-                                toReturn[i][j] = rowSize - j;
-                            }
+                            toReturn[i][j] = rowSize - j;
                         }
+                    }
                     break;
                 case DataType.random:
                     Random rand = new Random();
@@ -180,6 +249,9 @@ namespace sortingProject
             return toReturn;
         }
 
+        /*
+        * Description: sort array
+        */ 
         private int[][] createSorted(int[][] inputData)
         {
             int[][] sortedArray = arrayCopy2d(inputData);
@@ -190,6 +262,9 @@ namespace sortingProject
             return sortedArray;
         }
 
+        /*
+        * Description: copy array
+        */ 
         private int[][] arrayCopy2d(int[][] source)
         {
             int[][] toReturn = new int[source.Length][];

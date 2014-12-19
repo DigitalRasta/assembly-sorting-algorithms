@@ -6,9 +6,23 @@ using System.Threading.Tasks;
 
 namespace csharpLib
 {
+    /*
+     * Description: Csharp library containing sorting methods
+     * Author: Jakub'Digitalrasta'Bujny
+     * Version: 0.2.0
+     * Changelog:
+     *      0.0.0: added basic bubble sort implementation
+     *      0.1.0: added basic insert sort implementation
+     *      0.2.0: added basic quick sort implementation
+     */
     public class Sorting
     {
-
+        /*
+         * Description: simple bubble sort implementation
+         * Arguments:
+         * pointer - pointer to array
+         * length - length of array
+         */
         public unsafe void bubble(int* pointer, int length)
         {
             int temp = 0;
@@ -26,6 +40,12 @@ namespace csharpLib
             }
         }
 
+        /*
+         * Description: simple insert sort implementation
+         * Arguments:
+         * pointer - pointer to array
+         * length - length of array
+         */
         public unsafe void insert(int* pointer, int length)
         {
             int temp = 0;
@@ -43,11 +63,24 @@ namespace csharpLib
             }
         }
 
+        /*
+         * Description: method used in recusrive quick sort
+         * Arguments:
+         * pointer - pointer to array
+         * length - length of array
+         */
         public unsafe void quick(int* pointer, int length)
         {
             quick_resursive(pointer, 0, length-1);
         }
 
+        /*
+         * Description: simple recursive quick sort implementation
+         * Arguments:
+         * array - pointer to array
+         * low - low index of array
+         * high - high index of array
+         */
         private unsafe void quick_resursive(int* array, int low, int high)
         { 
             if (low < high)
